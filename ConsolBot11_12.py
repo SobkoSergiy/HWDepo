@@ -99,9 +99,9 @@ class Record:
         self.phones = []
     
     def __str__(self):
-        bd = (", birthday: " + self.birthday.value if self.birthday.value else "")
-        ph = (", phones: "+'; '.join(p.value for p in self.phones) if len(self.phones) > 0 else '')
-        return f"Contact name: {self.name.value}{bd}{ph}"
+        bd = (", birthday: " + self.birthday.value if self.birthday.value else " ")
+        ph = (", phones: "+'; '.join(p.value for p in self.phones) if len(self.phones) > 0 else ' ')
+        return f"Contact name: {self.name.value:12}{bd:22}{ph}"
         # return f"Contact name: {self.name.value}{bd}, phones: {'; '.join(p.value for p in self.phones)}"
 
     def index_phone(self, phone) -> int:
@@ -166,7 +166,6 @@ class Record:
 
 
 class AddressBook(UserDict):
-
     def show_records(self):
         for record in self.data.values():
             print(record)    
@@ -325,7 +324,7 @@ def findname_func(nb, cl):  # findname namepart : search for phones by part of t
         raise ValueError("ERROR: command 'findname' wrong parameters")
     nb.find_names(cl[1])
 
-def findph_func(nb, cl):    # findph numberpart : search for names by part of the phone number
+def findph_func(nb, cl):    # findphone numberpart : search for names by part of the phone number
     if (len(cl) < 2) or (not cl[1].isnumeric()):
         raise ValueError("ERROR: command 'findph' wrong parameters")
     nb.find_phones(cl[1])
