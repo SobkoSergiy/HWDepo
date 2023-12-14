@@ -80,7 +80,7 @@ def run_socket_server():
             if len(data) > 0:
                 data_parse = urllib.parse.unquote_plus(data.decode())
                 data_dict = {key: value for key, value in [el.split('=') for el in data_parse.split('&')]}   
-                if len(data_dict.get("username")) and len(data_dict.get("message")):
+                if len(data_dict.get("username", 0)) and len(data_dict.get("message", 0)):
                     with open(dfile, "r") as fh:
                         users = json.load(fh)
 
