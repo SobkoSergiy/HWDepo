@@ -76,19 +76,20 @@ def run_socket_server():
     dfile = pathlib.Path.cwd() / "storage" / "data.json"
     try:
         while True:
-            data, address = sock.recvfrom(1024)
-            data_parse = urllib.parse.unquote_plus(data.decode())
-            data_dict = {key: value for key, value in [el.split('=') for el in data_parse.split('&')]}   
+            data, _ = sock.recvfrom(1024)
+            if len(data) > 0:
+                data_parse = urllib.parse.unquote_plus(data.decode())
+                data_dict = {key: value for key, value in [el.split('=') for el in data_parse.split('&')]}   
+                if len(data_dict.get("username")) and len(data_dict.get("message")):
+                    with open(dfile, "r") as fh:
+                        users = json.load(fh)
 
-            with open(dfile, "r") as fh:
-                users = json.load(fh)
+                    today = datetime.today()
+                    new = {str(today): {"username": data_dict["username"], "message": data_dict["message"]}}
+                    users.update(new)
 
-            today = datetime.today()
-            new = {str(today): {"username": data_dict["username"], "message": data_dict["message"]}}
-            users.update(new)
-
-            with open(dfile, "w") as fh:
-                json.dump(users, fh)
+                    with open(dfile, "w") as fh:
+                        json.dump(users, fh)
     except KeyboardInterrupt:
         print(f'Destroy server')
     finally:
