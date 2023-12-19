@@ -39,10 +39,10 @@ async def clean_data(data, curr):
 
 
 async def print_data(rates):
+    pattern = '|' + Fore.LIGHTGREEN_EX + '{:^10}' + Fore.RESET + '|' + Fore.LIGHTRED_EX + '{:^10}' + \
+    Fore.RESET + '|' + Fore.LIGHTYELLOW_EX + '{:^10}' + Fore.RESET  + '|' 
     for k, v in rates.items():
         print(f"date: {k}")
-        pattern = '|' + Fore.LIGHTGREEN_EX + '{:^10}' + Fore.RESET + '|' + Fore.LIGHTRED_EX + '{:^10}' + \
-        Fore.RESET + '|' + Fore.LIGHTYELLOW_EX + '{:^10}' + Fore.RESET  + '|' 
         print(pattern.format('currency', 'sale', 'buy'))
         for el in v:
             print(pattern.format(el[0], el[1], el[2]))
