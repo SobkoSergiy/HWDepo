@@ -49,12 +49,11 @@ async def print_data(rates):
     print()
 
 
-async def get_date_rate(date):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(f'https://api.privatbank.ua/p24api/exchange_rates?json&date={date}') as response:
-            print(f"\nStatus: {response.status:3}")
-            result = await response.json()
-            return result
+async def get_date_rate(date, session):
+    async with session.get(f'https://api.privatbank.ua/p24api/exchange_rates?json&date={date}') as response:
+        print(f"\nStatus: {response.status:3}")
+        result = await response.json()
+        return result
 
 
 async def main():
@@ -83,10 +82,11 @@ async def main():
     interval = timedelta(days=1)
     rates = {}
 
-    for i in range(days):
-        result_date = (today - interval*i).strftime('%d.%m.%Y')
-        rate = await get_date_rate(result_date)
-        rates[result_date] = await clean_data(rate.get("exchangeRate"), currency)
+    async with aiohttp.ClientSession() as session:
+        for i in range(days):
+            result_date = (today - interval*i).strftime('%d.%m.%Y')
+            rate = await get_date_rate(result_date, session)
+            rates[result_date] = await clean_data(rate.get("exchangeRate"), currency)
 
     await print_data(rates)  
 
