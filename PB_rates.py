@@ -41,6 +41,7 @@ async def clean_data(data, curr):
 async def print_data(rates):
     pattern = '|' + Fore.LIGHTGREEN_EX + '{:^10}' + Fore.RESET + '|' + Fore.LIGHTRED_EX + '{:^10}' + \
     Fore.RESET + '|' + Fore.LIGHTYELLOW_EX + '{:^10}' + Fore.RESET  + '|' 
+    print()
     for k, v in rates.items():
         if len(v) > 0:
             print(f"date: {k}:")
