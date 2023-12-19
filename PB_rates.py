@@ -12,7 +12,7 @@ def help_prn():
     PB_rates [days][currency]
     days = integer 1..10 (default = 1)
     currency = USD EUR CHF GBP PLZ SEK CAD XAU       
-    in any combination (default = all): 
+        in any combination (default = all): 
         USD	долар США
         EUR	євро
         CHF	швейцарський франк
