@@ -2,7 +2,7 @@ import platform
 import asyncio
 import aiohttp
 import sys      
-# import json
+import os      
 from datetime import datetime, timedelta
 from colorama import init, Fore 
 
@@ -21,7 +21,7 @@ async def help_prn():
         SEK	шведська крона
         CAD	канадський долар
         XAU	золото
-    ?, -h : this text   
+    ?, -h - this text   
     ''')
 
 
@@ -42,21 +42,23 @@ async def print_data(rates):
     pattern = '|' + Fore.LIGHTGREEN_EX + '{:^10}' + Fore.RESET + '|' + Fore.LIGHTRED_EX + '{:^10}' + \
     Fore.RESET + '|' + Fore.LIGHTYELLOW_EX + '{:^10}' + Fore.RESET  + '|' 
     for k, v in rates.items():
-        print(f"date: {k}")
-        print(pattern.format('currency', 'sale', 'buy'))
-        for el in v:
-            print(pattern.format(el[0], el[1], el[2]))
+        if len(v) > 0:
+            print(f"date: {k}:")
+            print(pattern.format('currency', 'sale', 'buy'))
+            for el in v:
+                print(pattern.format(*el))
     print()
 
 
 async def get_date_rate(date, session):
     async with session.get(f'https://api.privatbank.ua/p24api/exchange_rates?json&date={date}') as response:
-        print(f"\nStatus: {response.status:3}")
+        print(f"Date: {date}  Status: {response.status:3}")
         return await response.json()
-
+        
 
 async def main():
-    currency = {'USD', 'EUR', 'CHF', 'GBP', 'PLZ', 'SEK', 'CAD', 'XAU'}
+    currpatt = ('USD', 'EUR', 'CHF', 'GBP', 'PLZ', 'SEK', 'CAD', 'XAU')
+    currency = ['USD', 'EUR', 'CHF', 'GBP', 'PLZ', 'SEK', 'CAD', 'XAU']
     days = 1
 
     if len(sys.argv) > 1:
@@ -69,11 +71,13 @@ async def main():
                 if not (0 < days < 11):
                     days = 1
                 sys.argv.pop(1)
-            if len(sys.argv) > 1:     # second parameter - currensy set - is specifyed
-                currency.clear()
+            if len(sys.argv) > 1:   # second parameter - currensy set - is specifyed
                 sys.argv.pop(0)
+                currency.clear()
                 for c in sys.argv:
-                    currency.add(c.upper())
+                    cu = c.upper()
+                    if (cu in currpatt) and (cu not in currency):
+                        currency.append(cu)
 
     today = datetime.now()
     interval = timedelta(days=1)
@@ -88,12 +92,18 @@ async def main():
     await print_data(rates)  
 
 
+def clear_screen():
+    clear = 'cls' if os.name == 'nt' else 'clear'
+    os.system(clear)
+
+
 
 if __name__ == "__main__":
 
     if platform.system() == 'Windows':
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     init()
+    clear_screen()
 
     asyncio.run(main())
 
