@@ -52,8 +52,7 @@ async def print_data(rates):
 async def get_date_rate(date, session):
     async with session.get(f'https://api.privatbank.ua/p24api/exchange_rates?json&date={date}') as response:
         print(f"\nStatus: {response.status:3}")
-        result = await response.json()
-        return result
+        return await response.json()
 
 
 async def main():
@@ -67,10 +66,8 @@ async def main():
         else:
             if sys.argv[1].isdigit():   # first parameter - days - is specifyed
                 days = int(sys.argv[1])
-                if days < 1:
+                if not (0 < days < 11):
                     days = 1
-                if days > 10:
-                    days = 10
                 sys.argv.pop(1)
             if len(sys.argv) > 1:     # second parameter - currensy set - is specifyed
                 currency.clear()
