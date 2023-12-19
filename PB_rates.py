@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from colorama import init, Fore 
 
 
-def help_prn():
+async def help_prn():
     print('''
     PB_rates [days][currency]
     days = integer 1..10 (default = 1)
@@ -63,7 +63,7 @@ async def main():
 
     if len(sys.argv) > 1:
         if ('?' in sys.argv[1]) or ('-h' in sys.argv[1]):
-            help_prn()
+            await help_prn()
             return
         else:
             if sys.argv[1].isdigit():   # first parameter - days - is specifyed
