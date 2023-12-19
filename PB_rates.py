@@ -72,7 +72,7 @@ async def main():
                 if days > 10:
                     days = 10
                 sys.argv.pop(1)
-            if len(sys.argv) > 1: 
+            if len(sys.argv) > 1:     # second parameter - currensy - is specifyed
                 currency.clear()
                 sys.argv.pop(0)
                 for c in sys.argv:
