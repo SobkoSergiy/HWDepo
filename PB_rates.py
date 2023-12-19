@@ -21,7 +21,7 @@ def help_prn():
         SEK	шведська крона
         CAD	канадський долар
         XAU	золото
-    ? -h : this text   
+    ?, -h : this text   
     ''')
 
 
