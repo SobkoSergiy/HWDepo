@@ -21,7 +21,7 @@ def help_prn():
         SEK	шведська крона
         CAD	канадський долар
         XAU	золото
-    ?, h - this text   
+    ?, -h - this text   
     ''')
 
 
@@ -62,7 +62,7 @@ async def main():
     days = 1
 
     if len(sys.argv) > 1:
-        if ('?' in sys.argv[1]) or ('h' in sys.argv[1]):
+        if ('?' in sys.argv[1]) or ('-' in sys.argv[1]):
             help_prn()
         else:
             if sys.argv[1].isdigit():   # first parameter - days - is specifyed
