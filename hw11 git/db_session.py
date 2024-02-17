@@ -1,0 +1,30 @@
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from sqlalchemy import Column, Integer, String
+
+
+engine = create_engine('sqlite:///hw11.db', echo=False)  
+DBSession = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+session = DBSession()
+
+class Base(DeclarativeBase):
+    pass
+
+class Contact(Base):
+    __tablename__ = 'contacts'
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String(50), nullable=False)
+    last_name = Column(String(100), nullable=True)
+    email = Column(String(50), nullable=True)
+    phone = Column(String(13), nullable=True)
+    birthday = Column(String(10), nullable=True)
+    inform = Column(String, nullable=True)
+
+
+def get_db():
+    db = DBSession()
+    try:
+        yield db
+    finally:
+        db.close()
+       
